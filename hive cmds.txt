@@ -1,0 +1,60 @@
+1.create alter drop table
+>hive
+>create database db;
+>show databases;
+>use db;
+>create table std(id int, name string)
+ row format delimited
+ fields terminated by ',';
+>insert into std values (1, 'vd');
+
+>alter table std change name stname string;
+>alter table std add columns (addr string);
+
+>drop table std;
+
+2.External table
+>hdfs dfs -mkdir /extable
+>hive
+>create external table emp (id int, name string) 
+ row format delimited
+ fields terminated by ','
+ location '/extable';
+
+
+3.load data and join
+>create table flight_data( col datatype from 2008,csv)
+ row format delimited
+ fields terminated by ',';
+
+>load data local inpath '/home/cloudera/Downloads/2008.csv' into table flight_data;
+
+>select * from flight_data limit 10;
+
+>create table airports (name string, country string, area_code int, code string)
+ row format delimited
+ fields terminated by ',';
+
+>load data local inpath '/home/cloudera/Downloads/airports.csv' into table airports;
+
+>select * from airports limit 10;
+
+>select a.name, avg(f.dep_delay) 
+ from flight_data f 
+ inner join airports a 
+ on (f.origin = a.code) 
+ where month = 1
+ group by a.name;
+
+
+4.create index
+
+>create index origin_index on table flight_data (origin) as 'compact' with deferred rebuild;
+
+>show indexes on flight_data;
+
+
+5.avg per day
+>select day, avg(dep_delay)
+ from flight_data
+ group by day;
