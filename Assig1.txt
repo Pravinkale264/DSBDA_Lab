@@ -1,0 +1,19 @@
+hdfs dfs -mkdir /input13
+
+hdfs dfs -put /home/cloudera/input.csv  /input13
+
+hdfs dfs -ls /
+
+hdfs dfs -ls /input13
+
+hadoop jar /home/cloudera/WordCount12.jar /input13/input.csv  /out3
+
+hdfs dfs -cat /out3
+
+hdfs dfs -ls /
+
+hdfs dfs -ls /out3
+
+hdfs dfs -cat /out3/part-00000
+
+
